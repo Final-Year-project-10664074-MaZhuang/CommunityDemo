@@ -1,11 +1,13 @@
--- auto-generated definition
-create table USER_1
+create table user
 (
-    ID         INT,
-    ACCOUNT_ID VARCHAR(100),
-    NAME       VARCHAR(50),
-    TOKEN      CHARACTER(36),
-    GMT_CREATE BIGINT,
-    GMT_MODIFY BIGINT,
-    BIO        VARCHAR(256)
+	id int auto_increment,
+	account_id varchar(100),
+	name varchar(50),
+	token char(36),
+	gmt_create bigint,
+	gmt_modify bigint,
+	bio varchar(256),
+	constraint user_pk
+		primary key (id)
 );
+
