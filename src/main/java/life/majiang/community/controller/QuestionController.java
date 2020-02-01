@@ -13,7 +13,6 @@ public class QuestionController {
 
     @Autowired
     private QuestionService questionService;
-
     @GetMapping("/question/{id}")
     public String question(@PathVariable(name = "id") Integer id,
                            Model model){
