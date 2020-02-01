@@ -61,7 +61,7 @@ public class AuthorizeController {
             return "redirect:/";
         } else {
             //sign in failed resign
-            return "redirect:/  ";
+            return "redirect:/";
         }
     }
 }
