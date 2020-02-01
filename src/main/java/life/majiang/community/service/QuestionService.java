@@ -99,4 +99,24 @@ public class QuestionService {
         questionDTO.setUser(user);
         return questionDTO;
     }
+
+    public void createOrUpdate(Question question) {
+        if(question.getId()==null){
+            question.setGmtcreate(System.currentTimeMillis());
+            question.setGmtmodified(question.getGmtcreate());
+            questionMapper.create(question);
+        }else {
+            question.setGmtmodified(System.currentTimeMillis());
+            questionMapper.update(question);
+        }
+    }
+
+    /*public QuestionDTO getQuestionById(Integer id) {
+        Question question = questionMapper.getById(id);
+        QuestionDTO questionDTO = new QuestionDTO();
+        BeanUtils.copyProperties(question, questionDTO);
+        User user = userMapper.findById(question.getCreator());
+        questionDTO.setUser(user);
+        return questionDTO;
+    }*/
 }
