@@ -3,6 +3,7 @@ package life.majiang.community.controller;
 import life.majiang.community.dto.PaginationDTO;
 import life.majiang.community.model.User;
 import life.majiang.community.service.QuestionService;
+import life.majiang.community.service.notificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +17,8 @@ public class ProfileController {
 
     @Autowired
     private QuestionService questionService;
+    @Autowired
+    private notificationService notificationService;
     @GetMapping("/profile/{action}")
     public String profile(@PathVariable(name = "action") String action,
                           Model model,
@@ -30,12 +33,14 @@ public class ProfileController {
         if("questions".equals(action)){
             model.addAttribute("section","questions");
             model.addAttribute("sectionName","My Questions");
+            PaginationDTO paginationDTO = questionService.list(user.getId(), page, size);
+            model.addAttribute("pagination", paginationDTO);
         }else if("replies".equals(action)){
+            PaginationDTO paginationDTO = notificationService.list(user.getId(), page, size);
+            model.addAttribute("pagination", paginationDTO);
             model.addAttribute("section","replies");
             model.addAttribute("sectionName","My Replies");
         }
-        PaginationDTO paginationDTO = questionService.list(user.getId(), page, size);
-        model.addAttribute("pagination", paginationDTO);
         return "profile";
     }
 }

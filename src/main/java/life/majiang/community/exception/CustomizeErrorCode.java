@@ -7,7 +7,9 @@ public enum CustomizeErrorCode implements ICustomizeErrorCode{
     SYS_ERROR(2004,"server is busy"),
     TYPE_PARAM_WRONG(2005,"Wrong or nonexistent comment type"),
     COMMENT_NOT_FOUND (2006,"Wrong or nonexistent comment type"),
-    CONTENT_IS_EMPTY (2007,"Comment content cannot be empty");
+    CONTENT_IS_EMPTY (2007,"Comment content cannot be empty"),
+    READ_NOTIFICATION_FAIL (2008,"Information read error"),
+    NOTIFICATION_NOT_FOUND (2009,"No response found");
     @Override
     public String getMessage() {
         return message;
