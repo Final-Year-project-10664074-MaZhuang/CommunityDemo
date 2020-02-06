@@ -53,13 +53,13 @@ function collapseComments(e) {
     var comments = $("#comment-" + id);
     var collapse = e.getAttribute("data-collapse");
     if (collapse) {
-        console.log("collapse="+collapse);
+        console.log("collapse=" + collapse);
         comments.removeClass("in");
         e.removeAttribute("data-collapse");
         e.classList.remove("active");
     } else {
         var subCommentContainer = $("#comment-" + id);
-        console.log("subCommentContainer="+subCommentContainer.children().length);
+        console.log("subCommentContainer=" + subCommentContainer.children().length);
         if (subCommentContainer.children().length != 1) {
             comments.addClass("in");
             e.setAttribute("data-collapse", "in");
@@ -103,6 +103,24 @@ function collapseComments(e) {
                 e.setAttribute("data-collapse", "in");
                 e.classList.add("active");
             });
+        }
+    }
+}
+
+function showSelectTag() {
+    $("#select-tag").show();
+}
+
+
+function selectTag(e) {
+    var value = e.getAttribute("data-tag");
+    var previous = $("#tag").val();
+
+    if (previous.split(',').indexOf(value) == -1) {
+        if (previous) {
+            $("#tag").val(previous + ',' + value);
+        } else {
+            $("#tag").val(value);
         }
     }
 }

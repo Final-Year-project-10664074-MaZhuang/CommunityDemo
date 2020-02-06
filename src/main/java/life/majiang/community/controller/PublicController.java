@@ -1,10 +1,12 @@
 package life.majiang.community.controller;
 
+import life.majiang.community.cache.TagCache;
 import life.majiang.community.dto.QuestionDTO;
 import life.majiang.community.mapper.QuestionMapper;
 import life.majiang.community.model.Question;
 import life.majiang.community.model.User;
 import life.majiang.community.service.QuestionService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,44 +25,54 @@ public class PublicController {
 
     @GetMapping("/publish/{id}")
     public String edit(@PathVariable(name = "id") Long id,
-                       Model model){
+                       Model model) {
         QuestionDTO question = questionService.getById(id);
-        model.addAttribute("title",question.getTitle());
-        model.addAttribute("description",question.getDescription());
-        model.addAttribute("tag",question.getTag());
-        model.addAttribute("id",question.getId());
+        model.addAttribute("title", question.getTitle());
+        model.addAttribute("description", question.getDescription());
+        model.addAttribute("tag", question.getTag());
+        model.addAttribute("id", question.getId());
+        model.addAttribute("tags", TagCache.get());
         return "publish";
     }
 
     @GetMapping("/publish")
-    public String publish() {
+    public String publish(Model model) {
+        model.addAttribute("tags", TagCache.get());
         return "publish";
     }
 
     @PostMapping("/publish")
     public String doPublish(
-            @RequestParam(value = "title",required = false) String title,
-            @RequestParam(value = "description",required = false) String description,
-            @RequestParam(value = "tag",required = false) String tag,
-            @RequestParam(value = "id",required = false) Long id,
+            @RequestParam(value = "title", required = false) String title,
+            @RequestParam(value = "description", required = false) String description,
+            @RequestParam(value = "tag", required = false) String tag,
+            @RequestParam(value = "id", required = false) Long id,
             HttpServletRequest request,
             Model model) {
 
-        model.addAttribute("title",title);
-        model.addAttribute("description",description);
-        model.addAttribute("tag",tag);
-        if(title==null||title==""){
-            model.addAttribute("error","Title can not empty");
+        model.addAttribute("title", title);
+        model.addAttribute("description", description);
+        model.addAttribute("tag", tag);
+        model.addAttribute("tags", TagCache.get());
+        if (title == null || title == "") {
+            model.addAttribute("error", "Title can not empty");
             return "publish";
         }
-        if(description==null||description==""){
-            model.addAttribute("error","description can not empty");
+        if (description == null || description == "") {
+            model.addAttribute("error", "description can not empty");
             return "publish";
         }
-        if(tag==null||tag==""){
-            model.addAttribute("error","tag can not empty");
+        if (tag == null || tag == "") {
+            model.addAttribute("error", "tag can not empty");
             return "publish";
         }
+
+        String invalid = TagCache.FilterInvalid(tag);
+        if (StringUtils.isNotBlank(invalid)) {
+            model.addAttribute("error", "Enter illegal label: " + invalid);
+            return "publish";
+        }
+
         User user = (User) request.getSession().getAttribute("user");
         if (user == null) {
             model.addAttribute("Error", "User is not Sign in");
