@@ -12,6 +12,7 @@
     <script src="/js/community.js" type="application/javascript"></script>
     <script src="/js/editormd.min.js" type="application/javascript"></script>
     <script src="/js/languages/en.js" type="text/javascript"></script>
+
 </head>
 <body>
 <div th:replace="~{navigation::nav}"></div>
@@ -41,9 +42,12 @@
                             width: "100%",
                             height: 350,
                             path: "/js/lib/",
-                            delay:0,
-                            watch:false,
-                            placeholder:"Describe the problem in detail"
+                            delay: 0,
+                            watch: false,
+                            placeholder: "Describe the problem in detail",
+                            imageUpload: true,
+                            imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+                            imageUploadURL: "/file/upload"
                         });
                     });
                 </script>
@@ -95,5 +99,6 @@
         </div>
     </div>
 </div>
+<div th:replace="~{footer::foot}"></div>
 </body>
 </html>
